@@ -6,3 +6,5 @@ parameters:
     database_password: ~
 
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    jwt_secret: 12345
