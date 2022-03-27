@@ -1,6 +1,7 @@
 api_v1:
-    resource: '@AppBundle/Modules/Api/V1/Controller'
+    resource: '@AppBundle/Modules/Api/V1/Http/Controller'
     type: annotation
 
-api_v1_login_check:
-    path: /v1/api/login_check
+api_v1_login:
+    path: /v1/api/login
+    methods: POST

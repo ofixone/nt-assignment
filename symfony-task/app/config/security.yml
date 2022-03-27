@@ -1,6 +1,6 @@
 lexik_jwt_authentication:
-  secret_key: '%kernel.project_dir%/config/jwt/private.pem'
-  public_key: '%kernel.project_dir%/config/jwt/public.pem'
+  secret_key: '%kernel.project_dir%/app/config/jwt/private.pem'
+  public_key: '%kernel.project_dir%/app/config/jwt/public.pem'
   pass_phrase: '12345'
   token_ttl: 3600
 
@@ -20,26 +20,20 @@ security:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
-    api_v1_login:
-      pattern: ^/v1/api/login
+    api_v1:
       stateless: true
       anonymous: true
       provider: app
       json_login:
-        check_path: /v1/api/login_check
+        check_path: api_v1_login
         username_path: email
         password_path: password
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-    api_v1:
-      pattern: ^/v1/api
-      stateless: true
       guard:
         authenticators:
           - lexik_jwt_authentication.jwt_token_authenticator
 
   access_control:
-    - { path: ^/v1/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/v1/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/v1/api,       roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/v1/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

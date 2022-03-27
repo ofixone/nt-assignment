@@ -11,11 +11,12 @@ umask(0000);
 $dotenv = new Dotenv();
 $dotenv->load(dirname(__DIR__) . '/.env');
 
-if ($_ENV['APP_ENV']) {
+$isDebugEnabled = filter_var($_ENV['APP_DEBUG'], FILTER_VALIDATE_BOOL);
+if ($isDebugEnabled) {
     Debug::enable();
 }
 
-$kernel = new AppKernel($_ENV['APP_ENV'], false);
+$kernel = new AppKernel($_ENV['APP_ENV'], $isDebugEnabled);
 
 $request = Request::createFromGlobals();
 /** @noinspection PhpUnhandledExceptionInspection */

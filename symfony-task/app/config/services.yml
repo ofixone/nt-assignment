@@ -10,7 +10,12 @@ services:
         resource: '../../src/AppBundle/*'
         exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
 
-    AppBundle\Modules\Api\V1\Controller\:
-        resource: '../../src/AppBundle/Modules/Api/V1/Controller'
+    AppBundle\Modules\Api\V1\Http\Controller\:
+        resource: '../../src/AppBundle/Modules/Api/V1/Http/Controller'
         public: true
         tags: ['controller.service_arguments']
+
+    p.param_converter.dto_param_converter:
+        class: AppBundle\Modules\Api\V1\Http\ParamConverter\DtoParamConverter
+        tags:
+            - { name: request.param_converter, converter: dto_param_converter }
