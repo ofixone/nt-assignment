@@ -38,7 +38,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function setName($name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -50,7 +50,7 @@ class User implements UserInterface
         return $this->name;
     }
 
-    public function setEmail($email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -62,7 +62,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setPassword($password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
