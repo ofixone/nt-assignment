@@ -4,7 +4,7 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Modules\Api\V1\Exception\ValidatorException;
 use App\Http\Responses\JsonExceptionResponse;
-use AppBundle\Normalizer\ExceptionNormalizer;
+use AppBundle\Modules\Api\V1\Normalizer\ExceptionNormalizer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;

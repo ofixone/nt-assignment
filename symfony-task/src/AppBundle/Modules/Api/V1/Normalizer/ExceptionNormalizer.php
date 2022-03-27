@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Normalizer;
+namespace AppBundle\Modules\Api\V1\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Throwable;
