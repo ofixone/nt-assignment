@@ -1,24 +1,45 @@
-# To get started with security, check out the documentation:
-# https://symfony.com/doc/current/security.html
+lexik_jwt_authentication:
+  secret_key: '%kernel.project_dir%/config/jwt/private.pem'
+  public_key: '%kernel.project_dir%/config/jwt/public.pem'
+  pass_phrase: '12345'
+  token_ttl: 3600
+
 security:
+  encoders:
+    AppBundle\Entity\User:
+      algorithm: bcrypt
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
-    providers:
-        in_memory:
-            memory: ~
+  providers:
+    app:
+      entity:
+        class: AppBundle:User
+        property: email
 
-    firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
-            logout_on_user_change: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+    api_v1_login:
+      pattern: ^/v1/api/login
+      stateless: true
+      anonymous: true
+      provider: app
+      json_login:
+        check_path: /v1/api/login_check
+        username_path: email
+        password_path: password
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    api_v1:
+      pattern: ^/v1/api
+      stateless: true
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
+
+  access_control:
+    - { path: ^/v1/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/v1/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/v1/api,       roles: IS_AUTHENTICATED_FULLY }
