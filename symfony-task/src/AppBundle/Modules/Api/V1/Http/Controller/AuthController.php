@@ -3,8 +3,7 @@
 namespace AppBundle\Modules\Api\V1\Http\Controller;
 
 use App\Http\Responses\StatusResponse;
-use AppBundle\Modules\Auth\UseCases\Registration\Command;
-use AppBundle\Modules\Auth\UseCases\Registration\Dto;
+use AppBundle\Modules\Auth\UseCases;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,9 +14,9 @@ class AuthController extends Controller
 {
     /**
      * @Route("/v1/api/register", name="api_v1_register", methods={"POST"})
-     * @ParamConverter("dto", class=Dto::class, converter=DtoParamConverter::TYPE)
+     * @ParamConverter("dto", class=UseCases\Registration\Dto::class, converter=DtoParamConverter::TYPE)
      */
-    public function registerAction(Command $command, Dto $dto): JsonResponse
+    public function registerAction(UseCases\Registration\Command $command, UseCases\Registration\Dto $dto): JsonResponse
     {
         $command->handle($dto);
 

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Throwable;
@@ -16,16 +17,22 @@ class DtoParamConverter implements ParamConverterInterface
 {
     public const TYPE = 'dto_param_converter';
 
+    public const SOURCE_BODY  = 'body';
+    public const SOURCE_QUERY = 'query';
+
     private SerializerInterface $serializer;
     private ValidatorInterface $validator;
+    private DenormalizerInterface $denormalizer;
 
     public function __construct(
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        DenormalizerInterface $denormalizer
     )
     {
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->denormalizer = $denormalizer;
     }
 
     /**
@@ -34,6 +41,8 @@ class DtoParamConverter implements ParamConverterInterface
     public function apply(Request $request, ParamConverter $configuration): bool
     {
         $options = $configuration->getOptions();
+
+        $source = $options['source'] ?? self::SOURCE_BODY;
 
         try {
             $class = $configuration->getClass();
@@ -49,12 +58,27 @@ class DtoParamConverter implements ParamConverterInterface
                 $params[AbstractNormalizer::GROUPS] = $options['groups'];
             }
 
-            $dto = $this->serializer->deserialize(
-                $request->getContent(),
-                $configuration->getClass(),
-                'json',
-                $params
-            );
+            switch ($source) {
+                case self::SOURCE_BODY:
+                    $dto = $this->serializer->deserialize(
+                        $request->getContent(),
+                        $configuration->getClass(),
+                        'json',
+                        $params
+                    );
+                    break;
+                case self::SOURCE_QUERY:
+                    $dto = $this->denormalizer->denormalize(
+                        $request->query->all(),
+                        $configuration->getClass(),
+                        'array',
+                        $params
+                    );
+                    break;
+                default:
+                    throw new \DomainException('Unrecognized converter type');
+            }
+
 
         } catch (Throwable $e) {
             return $this->throwException($e, $configuration);

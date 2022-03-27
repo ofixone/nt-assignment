@@ -8,7 +8,7 @@ services:
 
     AppBundle\:
         resource: '../../src/AppBundle/*'
-        exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+        exclude: '../../src/AppBundle/{Entity,Tests}'
 
     AppBundle\Modules\Api\V1\Http\Controller\:
         resource: '../../src/AppBundle/Modules/Api/V1/Http/Controller'
