@@ -9,9 +9,8 @@ Accept: application/json
 POST http://localhost:8000/v1/api/register
 Content-Type: application/json
 Accept: application/json
-Authorization:
 
-{"email":  "test@mail.ru", "password": "test", "name":  "Test"}
+{"email":  "test@mail.ru", "password": "test", "name": "Test"}
 
 ###
 

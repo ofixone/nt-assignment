@@ -15,7 +15,20 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    # Json Exception Handler via Event Kernel
+    AppBundle\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    # Convert request query or body to object via Serializer or Denormalizer
     p.param_converter.dto_param_converter:
         class: AppBundle\Modules\Api\V1\Http\ParamConverter\DtoParamConverter
         tags:
             - { name: request.param_converter, converter: dto_param_converter }
+
+    # Unique constraint via Entity field
+    app.validator.unique_value_in_entity:
+        class: AppBundle\Validator\Constraints\UniqueFieldByEntityValidator
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        tags:
+            - { name: validator.constraint_validator }
