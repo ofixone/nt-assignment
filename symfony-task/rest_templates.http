@@ -1,0 +1,21 @@
+POST http://localhost:8000/v1/api/login
+Content-Type: application/json
+Accept: application/json
+
+{"email": "test@mail.ru", "password": "test"}
+
+###
+
+POST http://localhost:8000/v1/api/register
+Content-Type: application/json
+Accept: application/json
+Authorization:
+
+{"email":  "test@mail.ru", "password": "test", "name":  "Test"}
+
+###
+
+GET http://localhost:8000/v1/api/posts
+Content-Type: application/json
+Accept: application/json
+Authorization: <take it from register method>
