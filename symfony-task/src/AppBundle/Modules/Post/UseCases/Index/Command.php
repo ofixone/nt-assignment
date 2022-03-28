@@ -3,15 +3,15 @@
 namespace AppBundle\Modules\Post\UseCases\Index;
 
 use AppBundle\Entity\Post;
+use AppBundle\Modules\Post\Contracts\PostRepositoryInterface;
 use AppBundle\Repository\PostRepository;
-use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 class Command
 {
     private PaginatorInterface $paginator;
-    private PostRepository $repository;
+    private PostRepositoryInterface $repository;
 
     public function __construct(
         PaginatorInterface $paginator, PostRepository $repository
@@ -21,11 +21,20 @@ class Command
         $this->repository = $repository;
     }
 
+    /**
+     * @param mixed $paginationTarget
+     * @see PaginatorInterface::paginate()
+     *
+     * @param int $page
+     * @param int $perPage
+     *
+     * @return PaginationInterface
+     */
     private function getPagination(
-        QueryBuilder $queryBuilder, int $page, int $perPage
+        $paginationTarget, int $page, int $perPage
     ): PaginationInterface
     {
-        return $this->paginator->paginate($queryBuilder, $page, $perPage, [
+        return $this->paginator->paginate($paginationTarget, $page, $perPage, [
             'distinct' => true
         ]);
     }
@@ -38,8 +47,7 @@ class Command
     public function handle(Dto $dto): array
     {
         $pagination = $this->getPagination(
-            $this->repository->createQueryBuilder('Post')
-                ->addOrderBy('Post.id', 'DESC'),
+            $this->repository->getTargetForPagination(),
             $dto->getPage(),
             $dto->getPerPage()
         );
