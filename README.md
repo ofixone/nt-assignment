@@ -14,7 +14,7 @@ All src code located in ``symfony-task/src/AppBundle`` directory.
 
 #### Base
 - Copy ``.env.example`` to ``.env``:
-- Up Docker container by
+- Up Docker container
 ```bash
 docker-compose up -d
 ```
@@ -30,7 +30,7 @@ composer install
 ```
 - Set Jwt passphrase in ``app/config/parameters.yml`` and default database preset
 ```yaml
-# if you run app buy default docker settings, it should be like this:
+# if you run app with default docker settings, it should be like this:
 parameters:
     database_host: db
     database_port: 3306
