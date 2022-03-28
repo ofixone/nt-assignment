@@ -10,6 +10,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./symfony-task:/var/www
+      - ./plain-tasks:/var/plain
     networks:
       - network
 
