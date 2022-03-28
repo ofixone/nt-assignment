@@ -7,7 +7,7 @@ hope it won't affect readability :)
 
 #### Structure
 
-All src code located in ``plain-tasks/src/AppBundle`` directory
+All src code located in ``plain-tasks`` directory
 
 ### Symfony task №7
 
