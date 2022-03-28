@@ -1,5 +1,5 @@
 # Test Assignment NT
-### Symfony tasks №1-6
+### Tasks №1-6
 I added namespaces simply to delimit scopes and to "theoretically" redo everything into classes and add tests.
 Anyway, I hope it won't affect readability :)
 
