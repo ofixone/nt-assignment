@@ -94,7 +94,7 @@ namespace Task5
         $leftItems = $countItems;
 
         $usedLargePackages = $countLarge > 0 ?
-            min([floor($countItems / 5), $countLarge]) : 0;
+            min(floor($countItems / 5), $countLarge) : 0;
         $leftItems -= $usedLargePackages * 5;
 
         $usedSmallPackages = $countSmall > 0 ? min($leftItems, $countSmall) : 0;
@@ -102,6 +102,8 @@ namespace Task5
 
         return $leftItems > 0 ? -1 : $usedLargePackages + $usedSmallPackages;
     }
+
+    var_dump(calculateMinCratesCountHoldItems(16, 0,100));
 }
 
 /*
